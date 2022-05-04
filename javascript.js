@@ -29,29 +29,7 @@ function computerPlay() {
   return choice;
 }
 
-function humanPlay() {
-  // Prompts for human to play rock, paper, or scissors
-  // 1 = rock
-  // 2 = paper
-  // 3 = scissors
-  // let choice = prompt("Rock, paper, or scissors?").toUpperCase();
-
-  // Check choice is valid, if not, choose again
-  if (!checkValid(choice)) {
-    console.log("Invalid response, please enter rock, paper, or scissors.");
-    choice = humanPlay();
-  }
-
-  return choice;
-}
-
-function checkValid(choice) {
-  // Check choice is valid, if not, choose again
-  const validChoices = ["ROCK", "PAPER", "SCISSORS"];
-  return validChoices.includes(choice);
-}
-
-function playRound(event) {
+function playRound() {
   const humanChoice = this.textContent;
   const computerChoice = computerPlay();
 
@@ -87,24 +65,56 @@ function playRound(event) {
     }
   }
 
-  // Return outcome
-  console.log(outcome);
+  // Display the outcome
+  displayResults(outcome);
+
+  // Check the winner
+  const result = checkRoundWinner(outcome);
+
+  // Update the scores
+  updateScore(result);
+
+  // Display the new scores
+  displayScores()
+
+  // Update rounds played
+  updateRoundsPlayed();
+
   return outcome;
 }
 
-function checkWinner(gameText) {
-let winner = "";
-
-// Checks the string text to see if the player won or lost.
-if (gameText.includes("win")) {
-winner = "human";
-} else if (gameText.includes("lose")) {
-winner = "computer";
-} else {
-winner = "draw";
+function updateScore(result) {
+  if (result === "human") {
+    humanScore++;
+  } else if (result === "computer") {
+    computerScore++;
+  }
 }
 
-return winner;
+function displayScores() {
+  const scoresDiv = document.querySelector('#scores');
+  scoresDiv.textContent = `Human: ${humanScore} Computer: ${computerScore}`;
+}
+
+function updateRoundsPlayed() {
+  roundsPlayed++;
+  const roundsPlayedDiv = document.querySelector('#rounds-played');
+  roundsPlayedDiv.textContent = `Rounds played: ${roundsPlayed}`;
+}
+
+function checkRoundWinner(gameText) {
+  let winner = "";
+
+  // Checks the string text to see if the player won or lost.
+  if (gameText.includes("win")) {
+    winner = "human";
+  } else if (gameText.includes("lose")) {
+    winner = "computer";
+  } else {
+    winner = "draw";
+  }
+
+  return winner;
 }
 
 function game() {
@@ -118,31 +128,32 @@ function game() {
   // Play 5 rounds of Rock Paper Scissors
   for (let i = 0; i < numRounds; i++) {
     let gameText = playRound(humanPlay(), computerPlay());
-    let result = checkWinner(gameText);
+    let result = checkRoundWinner(gameText);
 
     if (result === "human") {
       humanScore++;
     } else if (result === "computer") {
       computerScore++;
     }
-
-    console.log(gameText);
   }
-
-  console.log(`Human score: ${humanScore}`);
-  console.log(`Computer score: ${computerScore}`);
 }
 
-// Event listeners for each button to pass the choice to the
-// playRound function
+let roundsPlayed = 0;
+let humanScore = 0;
+let computerScore = 0;
+
+// Event listeners for each button to play a round
 const buttons = document.querySelectorAll('button');
 buttons.forEach(btn => btn.addEventListener('click', playRound));
 
-function clickButton(event) {
-  const choice = this.textContent;
-  playRound(choice, computerPlay());
+// Display the results of a round in a div
+function displayResults(result) {
+  const roundResultsDiv = document.querySelector('#round-results');
+  roundResultsDiv.textContent = result;
 }
 
+
+//
 
 //---- Main ----//
 // game();
