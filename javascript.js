@@ -68,7 +68,7 @@ function playRound() {
   // Display the outcome
   displayResults(outcome);
 
-  // Check the winner
+  // Check the round winner
   const result = checkRoundWinner(outcome);
 
   // Update the scores
@@ -79,6 +79,9 @@ function playRound() {
 
   // Update rounds played
   updateRoundsPlayed();
+
+  // Check for a game winner
+  checkGameWinner();
 
   return outcome;
 }
@@ -115,6 +118,22 @@ function checkRoundWinner(gameText) {
   }
 
   return winner;
+}
+
+// If there is a winner, announce them and remove the button event listener
+function checkGameWinner() {
+  // If no one has won, return from the function
+  if (humanScore === 5) {
+    const winnerDiv = document.querySelector('#winner');
+    winnerDiv.textContent = 'Human wins!';
+  } else if (computerScore === 5) {
+    const winnerDiv = document.querySelector('#winner');
+    winnerDiv.textContent = 'Computer wins!';
+  } else {
+    return;
+  }
+
+  buttons.forEach(button => button.removeEventListener('click', playRound));
 }
 
 function game() {
