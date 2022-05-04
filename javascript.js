@@ -1,4 +1,23 @@
-//---- Function Definitions ----//
+// Rock Paper Scissors browser game
+
+function playRound() {
+  const humanChoice = this.textContent;
+  const computerChoice = computerPlay();
+
+  // Check the results and display the outcome
+  const outcome = checkResults(humanChoice, computerChoice);
+  displayResults(outcome);
+
+  // Update the score with the winner and display
+  const winner = checkRoundWinner(outcome);
+  updateScore(winner);
+  displayScores();
+
+  // Check for a game winner
+  checkGameWinner();
+
+  return outcome;
+}
 
 function computerPlay() {
   // Computer plays a turn, returns "rock", "paper", or "scissors"
@@ -29,10 +48,8 @@ function computerPlay() {
   return choice;
 }
 
-function playRound() {
-  const humanChoice = this.textContent;
-  const computerChoice = computerPlay();
-
+// Display the results of a round in a div
+function checkResults(humanChoice, computerChoice) {
   // Compare choices and return string with winner and description
   let outcome = "";
 
@@ -65,46 +82,15 @@ function playRound() {
     }
   }
 
-  // Display the outcome
-  displayResults(outcome);
-
-  // Check the round winner
-  const result = checkRoundWinner(outcome);
-
-  // Update the scores
-  updateScore(result);
-
-  // Display the new scores
-  displayScores()
-
-  // Update rounds played
-  updateRoundsPlayed();
-
-  // Check for a game winner
-  checkGameWinner();
-
   return outcome;
 }
 
-function updateScore(result) {
-  if (result === "human") {
-    humanScore++;
-  } else if (result === "computer") {
-    computerScore++;
-  }
+function displayResults(result) {
+  const roundResultsDiv = document.querySelector('#round-results');
+  roundResultsDiv.textContent = result;
 }
 
-function displayScores() {
-  const scoresDiv = document.querySelector('#scores');
-  scoresDiv.textContent = `Human: ${humanScore} Computer: ${computerScore}`;
-}
-
-function updateRoundsPlayed() {
-  roundsPlayed++;
-  const roundsPlayedDiv = document.querySelector('#rounds-played');
-  roundsPlayedDiv.textContent = `Rounds played: ${roundsPlayed}`;
-}
-
+// Extract the winner from the round outcome string
 function checkRoundWinner(gameText) {
   let winner = "";
 
@@ -120,13 +106,26 @@ function checkRoundWinner(gameText) {
   return winner;
 }
 
+function updateScore(winner) {
+  if (winner === "human") {
+    humanScore++;
+  } else if (winner === "computer") {
+    computerScore++;
+  }
+}
+
+function displayScores() {
+  const scoresDiv = document.querySelector('#scores');
+  scoresDiv.textContent = `Human: ${humanScore} Computer: ${computerScore}`;
+}
+
 // If there is a winner, announce them and remove the button event listener
 function checkGameWinner() {
   // If no one has won, return from the function
-  if (humanScore === 5) {
+  if (humanScore === scoreToWin) {
     const winnerDiv = document.querySelector('#winner');
     winnerDiv.textContent = 'Human wins!';
-  } else if (computerScore === 5) {
+  } else if (computerScore === scoreToWin) {
     const winnerDiv = document.querySelector('#winner');
     winnerDiv.textContent = 'Computer wins!';
   } else {
@@ -136,43 +135,15 @@ function checkGameWinner() {
   buttons.forEach(button => button.removeEventListener('click', playRound));
 }
 
-function game() {
-  // Number of rounds to play
-  let numRounds = 1;
-
-  // How many games each player has won
-  let humanScore = 0;
-  let computerScore = 0;
-
-  // Play 5 rounds of Rock Paper Scissors
-  for (let i = 0; i < numRounds; i++) {
-    let gameText = playRound(humanPlay(), computerPlay());
-    let result = checkRoundWinner(gameText);
-
-    if (result === "human") {
-      humanScore++;
-    } else if (result === "computer") {
-      computerScore++;
-    }
-  }
-}
-
-let roundsPlayed = 0;
+// Global variables to handle scores
 let humanScore = 0;
 let computerScore = 0;
+const scoreToWin = 5;
+
+// Initialise divs on webpage with text
+displayScores();
 
 // Event listeners for each button to play a round
 const buttons = document.querySelectorAll('button');
 buttons.forEach(btn => btn.addEventListener('click', playRound));
 
-// Display the results of a round in a div
-function displayResults(result) {
-  const roundResultsDiv = document.querySelector('#round-results');
-  roundResultsDiv.textContent = result;
-}
-
-
-//
-
-//---- Main ----//
-// game();
