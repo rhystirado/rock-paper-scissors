@@ -1,7 +1,7 @@
 // Rock Paper Scissors browser game
 
 function playRound() {
-  const humanChoice = this.textContent;
+  const humanChoice = this.dataset.item;
   const computerChoice = computerPlay();
 
   // Check the results and display the outcome
@@ -20,25 +20,25 @@ function playRound() {
 }
 
 function computerPlay() {
-  // Computer plays a turn, returns "rock", "paper", or "scissors"
+  // Computer plays a turn, returns 'rock', 'paper', or 'scissors'
   // Randomly choose a number between 1 and 3
   // 1 = rock
   // 2 = paper
   // 3 = scissors
   let number = Math.floor((Math.random() * 3)) + 1;
-  let choice = "";
+  let choice = '';
 
   switch (number) {
     case 1:
-    choice = "ROCK";
+    choice = 'ROCK';
     break;
 
     case 2:
-    choice = "PAPER";
+    choice = 'PAPER';
     break;
 
     case 3:
-    choice = "SCISSORS";
+    choice = 'SCISSORS';
     break;
 
     default:
@@ -51,34 +51,35 @@ function computerPlay() {
 // Display the results of a round in a div
 function checkResults(humanChoice, computerChoice) {
   // Compare choices and return string with winner and description
-  let outcome = "";
+  let outcome = '';
+  humanChoice = humanChoice.toUpperCase();
 
-  if (humanChoice === "ROCK") {
+  if (humanChoice === 'ROCK') {
     // Rock outcomes
-    if (computerChoice === "ROCK") {
-      outcome = "Draw! Rock ties with Rock";
-    } else if (computerChoice === "PAPER") {
-      outcome = "You lose! Paper beats Rock";
-    } else if (computerChoice === "SCISSORS") {
-      outcome = "You win! Rock beats Scissors";
+    if (computerChoice === 'ROCK') {
+      outcome = 'Draw! Rock ties with Rock';
+    } else if (computerChoice === 'PAPER') {
+      outcome = 'You lose! Paper beats Rock';
+    } else if (computerChoice === 'SCISSORS') {
+      outcome = 'You win! Rock beats Scissors';
     }
-  } else if (humanChoice === "PAPER") {
+  } else if (humanChoice === 'PAPER') {
     // Paper outcomes
-    if (computerChoice === "ROCK") {
-      outcome = "You win! Paper beats Rock";
-    } else if (computerChoice === "PAPER") {
-      outcome = "Draw! Paper ties with Paper";
-    } else if (computerChoice === "SCISSORS") {
-      outcome = "You lose! Scissors beats Paper";
+    if (computerChoice === 'ROCK') {
+      outcome = 'You win! Paper beats Rock';
+    } else if (computerChoice === 'PAPER') {
+      outcome = 'Draw! Paper ties with Paper';
+    } else if (computerChoice === 'SCISSORS') {
+      outcome = 'You lose! Scissors beats Paper';
     }
-  } else if (humanChoice === "SCISSORS") {
+  } else if (humanChoice === 'SCISSORS') {
     // Scissor outcomes
-    if (computerChoice === "ROCK") {
-      outcome = "You lose! Rock beats Scissors";
-    } else if (computerChoice === "PAPER") {
-      outcome = "You win! Scissors beats Paper";
-    } else if (computerChoice === "SCISSORS") {
-      outcome = "Draw! Scissors draws with Scissors";
+    if (computerChoice === 'ROCK') {
+      outcome = 'You lose! Rock beats Scissors';
+    } else if (computerChoice === 'PAPER') {
+      outcome = 'You win! Scissors beats Paper';
+    } else if (computerChoice === 'SCISSORS') {
+      outcome = 'Draw! Scissors draws with Scissors';
     }
   }
 
@@ -92,24 +93,24 @@ function displayResults(result) {
 
 // Extract the winner from the round outcome string
 function checkRoundWinner(gameText) {
-  let winner = "";
+  let winner = '';
 
   // Checks the string text to see if the player won or lost.
-  if (gameText.includes("win")) {
-    winner = "human";
-  } else if (gameText.includes("lose")) {
-    winner = "computer";
+  if (gameText.includes('win')) {
+    winner = 'human';
+  } else if (gameText.includes('lose')) {
+    winner = 'computer';
   } else {
-    winner = "draw";
+    winner = 'draw';
   }
 
   return winner;
 }
 
 function updateScore(winner) {
-  if (winner === "human") {
+  if (winner === 'human') {
     humanScore++;
-  } else if (winner === "computer") {
+  } else if (winner === 'computer') {
     computerScore++;
   }
 }
